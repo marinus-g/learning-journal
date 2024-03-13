@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.management.relation.Role;
 import javax.security.auth.Subject;
 import java.util.List;
 import java.util.Set;
@@ -48,7 +46,7 @@ public class UserEntity {
     @Column(name = "picture_id")
     private String pictureId;
 
-    @Column(name = "schedule_entries")
+    @OneToMany(mappedBy = "user_id")
     private List<ScheduleEntry> scheduleEntries;
 
     @Column(name = "teaching_subjects")
