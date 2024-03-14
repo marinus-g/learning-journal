@@ -39,7 +39,7 @@ public class UserEntity {
     @CollectionTable(name = "user_roles")
     private Set<Role> userRoles;
 
-    @ManyToMany()
+    @ManyToOne()
     private SchoolClass schoolClass;
 
     @Column(name = "picture_id")
