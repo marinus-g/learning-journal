@@ -1,5 +1,6 @@
 package academy.mischok.learningjournal;
 
+import academy.mischok.learningjournal.repository.UserRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
