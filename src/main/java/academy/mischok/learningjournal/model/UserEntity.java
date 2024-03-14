@@ -40,8 +40,8 @@ public class UserEntity {
     @CollectionTable(name = "user_roles")
     private Set<Role> userRoles;
 
-    @Column(name = "school_class")
-    private String schoolClass;
+    @ManyToOne
+    private SchoolClass schoolClass;
 
     @Column(name = "picture_id")
     private String pictureId;
