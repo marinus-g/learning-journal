@@ -14,7 +14,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-
 public class UserEntity {
 
     @Id
@@ -40,8 +39,8 @@ public class UserEntity {
     @CollectionTable(name = "user_roles")
     private Set<Role> userRoles;
 
-    @Column(name = "school_class")
-    private String schoolClass;
+    @ManyToMany()
+    private SchoolClass schoolClass;
 
     @Column(name = "picture_id")
     private String pictureId;
@@ -49,10 +48,10 @@ public class UserEntity {
     @OneToMany(mappedBy = "user_id")
     private List<ScheduleEntry> scheduleEntries;
 
-    @Column(name = "teaching_subjects")
+    @ManyToMany()
     private Set<Subject> teachingSubjects;
 
-    @Column(name = "teaching_topics")
+    @ManyToMany()
     private Set<Topic> teachingTopics;
 
     @OneToMany(mappedBy = "user_id")
