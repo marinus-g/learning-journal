@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-
 public class SchoolClass {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

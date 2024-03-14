@@ -40,7 +40,7 @@ public class UserEntity {
     @CollectionTable(name = "user_roles")
     private Set<Role> userRoles;
 
-    @ManyToOne
+    @ManyToOne()
     private SchoolClass schoolClass;
 
     @Column(name = "picture_id")
@@ -49,10 +49,10 @@ public class UserEntity {
     @OneToMany(mappedBy = "user_id")
     private List<ScheduleEntry> scheduleEntries;
 
-    @Column(name = "teaching_subjects")
+    @ManyToMany()
     private Set<Subject> teachingSubjects;
 
-    @Column(name = "teaching_topics")
+    @ManyToMany()
     private Set<Topic> teachingTopics;
 
     @OneToMany(mappedBy = "user_id")
