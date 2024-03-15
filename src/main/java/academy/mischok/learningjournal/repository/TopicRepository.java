@@ -14,9 +14,9 @@ import java.util.Optional;
 @Repository
 public interface TopicRepository extends JpaRepository<Topic,Long> {
   Optional<Topic> findByName(String name);
-  List<Topic> findAllByTeachersContaining(String lastName);
+ // List<Topic> findAllByTeachersContaining(String lastName);
  // List<Topic> findAllByJournalEntry(JournalEntry journalEntry);
    // List<Topic> findAllByJournalEntryAndUser(JournalEntry journalEntry, UserEntity user);
-    List<Topic> findAllBySubjectContaining(Subject subject);
+    List<Topic> findAllBySubject(Subject subject);
 
 }
