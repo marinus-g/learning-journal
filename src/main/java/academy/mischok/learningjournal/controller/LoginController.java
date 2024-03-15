@@ -15,14 +15,11 @@ public class LoginController {
         return "login";
     }
 
-
-
     @GetMapping("/login-error")
     public String loginError(Model model) {
         model.addAttribute("loginError", true);
         return "login";
     }
-
 
     @GetMapping("/login-post")
     public String loginPost(RedirectAttributes redirectAttributes) {
