@@ -21,7 +21,7 @@ public class SecurityConfig {
                 .formLogin(configurer -> {
                     configurer
                             .loginPage("/login")
-                            .loginProcessingUrl("/login-post")
+                            .loginProcessingUrl("/login")
                             .failureUrl("/login-error")
                             .successForwardUrl("/dashboard");
 

@@ -7,7 +7,7 @@
 <body>
 <h1>Login Seite</h1>
 <p th:if="${loginError}">Falsche Daten!</p>
-<form th:action="@{/login-post}" method="get">
+<form th:action="@{/login}" method="post">
     <label for="username">Username oder Email</label>
     <input id="username" placeholder="Username" name="username">
     <label for="password">Passwort</label>
