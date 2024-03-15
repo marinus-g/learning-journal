@@ -10,7 +10,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Component
@@ -29,13 +28,13 @@ public class ApplicationStartListener implements ApplicationListener<Application
     @Override
     public void onApplicationEvent(@NonNull ApplicationStartedEvent event) {
 
-        if (this.userService.findUserByUsername(learningJournalConfiguration.getDefaultAdminUserName()).isEmpty()) {
+        if (this.userService.findUserByUsername(learningJournalConfiguration.getDefaultAdminUsername()).isEmpty()) {
             UserDto.CreateDto createDto = UserDto.CreateDto.of(
-                    learningJournalConfiguration.getDefaultAdminUserName(),
+                    learningJournalConfiguration.getDefaultAdminUsername(),
                     learningJournalConfiguration.getDefaultAdminEmail(),
                     learningJournalConfiguration.getDefaultAdminPassword(),
-                    learningJournalConfiguration.getDefaultAdminUserName(),
-                    learningJournalConfiguration.getDefaultAdminUserName());
+                    learningJournalConfiguration.getDefaultAdminUsername(),
+                    learningJournalConfiguration.getDefaultAdminUsername());
             createDto.setUserRoles(Set.of(Role.ADMIN));
             userService.createUser(createDto).ifPresentOrElse(userDto -> {
                 System.out.println("Admin user created: " + userDto.getUserName());

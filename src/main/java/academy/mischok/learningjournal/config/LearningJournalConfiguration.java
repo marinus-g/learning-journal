@@ -10,7 +10,7 @@ public class LearningJournalConfiguration {
 
 
     @Value("${learning-journal.default.user.name}")
-    private String defaultAdminUserName;
+    private String defaultAdminUsername;
 
     @Value("${learning-journal.default.user.password}")
     private String defaultAdminPassword;

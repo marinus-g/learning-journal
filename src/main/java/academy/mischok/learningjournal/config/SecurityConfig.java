@@ -22,13 +22,13 @@ public class SecurityConfig {
                 .formLogin(configurer -> {
                     configurer
                             .loginPage("/login")
-                            .loginProcessingUrl("/login")
+                            .loginProcessingUrl("/login-post")
                             .failureUrl("/login-error")
                             .successForwardUrl("/dashboard");
 
                 })
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/login", "/login-error", "/error", "/login-post", "/h2-console/**")
+                    registry.requestMatchers("/login", "/login-error", "/error", "/login-post/**", "/h2-console/**")
                             .permitAll()
                             .anyRequest()
                             .authenticated();

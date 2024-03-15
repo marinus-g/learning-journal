@@ -1,0 +1,32 @@
+<nav class="bg-secondary">
+    <ul class="nav justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link text-white glow" aria-current="page" href="#">Active</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link  inactive-element" href="#">Link</a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link inactive-element" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link inactive-element" aria-disabled="true">Disabled</a>
+        </li>
+    </ul>
+    <style>
+        .nav-background-color {
+            background-color: #343a40;
+        }
+        .glow {
+            text-shadow: whitesmoke 0 0 3px;
+        }
+        .inactive-element {
+            transition: text-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+            color: lightgray;
+        }
+        .inactive-element:hover {
+            color: white;
+            text-shadow: white 0 0 1px;
+        }
+    </style>
+</nav>

@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
+    <link th:replace="~{bootstrap/style.html}">
 </head>
 <body>
-<h1>Dashboard Works!</h1>
+<nav th:replace="~{components/navbar/navbar.html}"></nav>
+<script th:replace="~{bootstrap/script.html}"></script>
 </body>
 </html>
