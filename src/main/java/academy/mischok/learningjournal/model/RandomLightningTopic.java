@@ -20,6 +20,8 @@ public class RandomLightningTopic {
     @GeneratedValue
     @Column
     private Long id;
+
+    @ManyToOne
     private Topic topic;
     private Instant timestamp;
     @ManyToOne()

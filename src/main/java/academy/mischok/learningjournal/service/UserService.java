@@ -31,7 +31,7 @@ public class UserService {
     }
 
     public Optional<UserEntity> findUserByUsername(String username) {
-        return userRepository.findByUsernameIgnoreCase(username);
+        return userRepository.findByUserNameIgnoreCase(username);
     }
 
     public Optional<UserEntity> findUserByEmail(String email) {
@@ -39,7 +39,7 @@ public class UserService {
     }
 
     public Optional<UserEntity> findUserByLogin(String login) {
-        return userRepository.findByUsernameIgnoreCase(login)
+        return userRepository.findByUserNameIgnoreCase(login)
                 .or(() -> userRepository.findByEmailIgnoreCase(login));
     }
 
