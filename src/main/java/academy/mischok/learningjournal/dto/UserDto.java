@@ -1,12 +1,13 @@
 package academy.mischok.learningjournal.dto;
 
-import academy.mischok.learningjournal.model.RandomLightningTopic;
 import academy.mischok.learningjournal.model.Role;
-import academy.mischok.learningjournal.model.Topic;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.lang.NonNull;
 
-import javax.security.auth.Subject;
 import java.util.List;
 import java.util.Set;
 
