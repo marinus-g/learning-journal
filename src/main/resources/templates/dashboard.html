@@ -6,10 +6,8 @@
     <link th:replace="~{bootstrap/style.html}">
 </head>
 <body class="background-color">
-<nav th:replace="~{components/navbar/navbar.html}"></nav>
-<div>
-
-</div>
+<nav th:replace="~{components/navbar/navbar.html :: navbar (selfUser=${selfUser}, httpServletRequest=${httpServletRequest})}"></nav>
+<div></div>
 <script th:replace="~{bootstrap/script.html}"></script>
 <style>
     .background-color {

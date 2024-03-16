@@ -36,11 +36,9 @@ public class ApplicationStartListener implements ApplicationListener<Application
                     learningJournalConfiguration.getDefaultAdminUsername(),
                     learningJournalConfiguration.getDefaultAdminUsername());
             createDto.setUserRoles(Set.of(Role.ADMIN));
-            userService.createUser(createDto).ifPresentOrElse(userDto -> {
-                System.out.println("Admin user created: " + userDto.getUserName());
-            }, () -> {
-                System.out.println("Admin user creation failed");
-            });
+            userService.createUser(createDto)
+                    .ifPresentOrElse(userDto -> System.out.println("Admin user created: " + userDto.getUsername()),
+                            () -> System.out.println("Admin user creation failed"));
         }
     }
 }
