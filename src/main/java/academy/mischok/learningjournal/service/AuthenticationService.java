@@ -1,6 +1,5 @@
 package academy.mischok.learningjournal.service;
 
-import academy.mischok.learningjournal.dto.UserDto;
 import academy.mischok.learningjournal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
