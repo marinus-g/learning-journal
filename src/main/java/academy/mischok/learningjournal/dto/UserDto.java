@@ -1,12 +1,13 @@
 package academy.mischok.learningjournal.dto;
 
-import academy.mischok.learningjournal.model.RandomLightningTopic;
 import academy.mischok.learningjournal.model.Role;
-import academy.mischok.learningjournal.model.Topic;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.lang.NonNull;
 
-import javax.security.auth.Subject;
 import java.util.List;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ public class UserDto {
     private Long id;
     private String firstName;
     private String lastName;
-    private String userName;
+    private String username;
     private String email;
 
     private Long schoolClass;
@@ -40,7 +41,7 @@ public class UserDto {
         public static CreateDto of(@NonNull String username, @NonNull String email,
                                    @NonNull String password, @NonNull String firstName, @NonNull String lastName) {
             CreateDto createDto = new CreateDto();
-            createDto.setUserName(username);
+            createDto.setUsername(username);
             createDto.setPassword(password);
             createDto.setEmail(email);
             createDto.setFirstName(firstName);
