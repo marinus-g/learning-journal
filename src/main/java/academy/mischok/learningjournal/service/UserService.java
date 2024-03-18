@@ -2,19 +2,23 @@ package academy.mischok.learningjournal.service;
 
 import academy.mischok.learningjournal.dto.PasswordChangeDto;
 import academy.mischok.learningjournal.dto.UserDto;
-import academy.mischok.learningjournal.model.*;
+import academy.mischok.learningjournal.model.RandomLightningTopic;
+import academy.mischok.learningjournal.model.ScheduleEntry;
+import academy.mischok.learningjournal.model.SchoolClass;
+import academy.mischok.learningjournal.model.Subject;
+import academy.mischok.learningjournal.model.Topic;
+import academy.mischok.learningjournal.model.UserEntity;
 import academy.mischok.learningjournal.repository.SchoolClassRepository;
 import academy.mischok.learningjournal.repository.SubjectRepository;
 import academy.mischok.learningjournal.repository.TopicRepository;
 import academy.mischok.learningjournal.repository.UserRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
@@ -22,7 +26,10 @@ import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
 @Service
-public class UserService {
+public class UserService  {
+
+    @PersistenceContext
+    private EntityManager entityManager;
     private final UserRepository userRepository;
     private final SchoolClassRepository schoolClassRepository;
     private final SubjectRepository subjectRepository;
@@ -59,7 +66,7 @@ public class UserService {
     public Optional<UserDto> createUser(UserDto.CreateDto userDto) {
         return Optional.ofNullable(userDto)
                 .map(createDto -> UserEntity.builder()
-                        .username(createDto.getUserName())
+                        .username(createDto.getUsername())
                         .email(createDto.getEmail())
                         .password(passwordEncoder.encode(userDto.getPassword()))
                         .firstName(createDto.getFirstName())
@@ -91,8 +98,8 @@ public class UserService {
                     if (userDto.getLastName() != null) {
                         user.setLastName(userDto.getLastName());
                     }
-                    if (userDto.getUserName() != null) {
-                        user.setUsername(userDto.getUserName());
+                    if (userDto.getUsername() != null) {
+                        user.setUsername(userDto.getUsername());
                     }
                     if (userDto.getEmail() != null) {
                         user.setEmail(userDto.getEmail());
@@ -105,7 +112,9 @@ public class UserService {
         );
     }
 
-    private UserDto toDto(UserEntity userEntity) { // null
+    int i = 0;
+    @Transactional
+    public UserDto toDto(UserEntity userEntity) { // null
         /*
         Optional.ofNullable(userEntity.getScheduleEntries()).stream()
                 .flatMap(scheduleEntries -> scheduleEntries.stream())
@@ -113,18 +122,48 @@ public class UserService {
                 .forEach(aLong -> al);
          */
 
+        if (i != 0) { // TODO: FIND A BETTER SOLUTION FOR THAT
+            if (!entityManager.contains(userEntity)) {
+                userEntity = this.userRepository.findById(userEntity.getId()).orElseThrow();
+            }
+        } else i++;
+
+
+
+        final var schoolClass = Optional.ofNullable(userEntity.getSchoolClass())
+                .map(SchoolClass::getId).orElse(null);
+        final var userRoles = Optional.ofNullable(userEntity.getRoles()).orElse(new HashSet<>());
+        final var scheduleEntries = Optional.ofNullable(userEntity.getScheduleEntries())
+                .stream()
+                .flatMap(Collection::stream)
+                .map(ScheduleEntry::getId)
+                .toList();
+        final var teachingSubjects = Optional.ofNullable(userEntity.getTeachingSubjects()).stream()
+                .flatMap(Collection::stream)
+                .map(Subject::getId)
+                .toList();
+        final var teachingTopics = Optional.ofNullable(userEntity.getTeachingTopics())
+                .stream()
+                .flatMap(Collection::stream)
+                .map(Topic::getId)
+                .toList();
+        final var randomLightningTopics = Optional.ofNullable(userEntity.getRandomLightningTopics())
+                .stream()
+                .flatMap(Collection::stream)
+                .map(RandomLightningTopic::getId)
+                .toList();
         return UserDto.builder()
                 .id(userEntity.getId())
                 .firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName())
-                .userName(userEntity.getUsername())
+                .username(userEntity.getUsername())
                 .email(userEntity.getEmail())
-                .schoolClass(Optional.ofNullable(userEntity.getSchoolClass()).map(SchoolClass::getId).orElse(null))
-                .userRoles(Optional.ofNullable(userEntity.getRoles()).orElse(new HashSet<>()))
-                .scheduleEntries(Optional.ofNullable(userEntity.getScheduleEntries()).stream().flatMap(Collection::stream).map(ScheduleEntry::getId).toList())
-                .teachingSubjects(Optional.ofNullable(userEntity.getTeachingSubjects()).stream().flatMap(Collection::stream).map(Subject::getId).toList())
-                .teachingTopics(Optional.ofNullable(userEntity.getTeachingTopics()).stream().flatMap(Collection::stream).map(Topic::getId).toList())
-                .randomLightningTopics(Optional.ofNullable(userEntity.getRandomLightningTopics()).stream().flatMap(Collection::stream).map(RandomLightningTopic::getId).toList())
+                .schoolClass(schoolClass)
+                .userRoles(userRoles)
+                .scheduleEntries(scheduleEntries)
+                .teachingSubjects(teachingSubjects)
+                .teachingTopics(teachingTopics)
+                .randomLightningTopics(randomLightningTopics)
                 .build();
     }
 
