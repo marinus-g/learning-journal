@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dein Profil</title>
+</head>
+<body class="background-color">
+<nav th:replace="~{components/navbar/navbar.html :: navbar (selfUser=${selfUser}, httpServletRequest=${httpServletRequest})}"></nav>
+</body>
+<style>
+    .background-color {
+        background-color: #343a40;
+    }
+</style>
+</html>
