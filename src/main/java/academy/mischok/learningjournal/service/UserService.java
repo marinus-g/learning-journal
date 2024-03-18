@@ -1,5 +1,6 @@
 package academy.mischok.learningjournal.service;
 
+import academy.mischok.learningjournal.dto.PasswordChangeDto;
 import academy.mischok.learningjournal.dto.UserDto;
 import academy.mischok.learningjournal.model.RandomLightningTopic;
 import academy.mischok.learningjournal.model.ScheduleEntry;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 @Service
 public class UserService  {
@@ -77,7 +80,6 @@ public class UserService  {
                 .map(this.userRepository::save)
                 .map(this::toDto);
     }
-
 
 
     public boolean deleteUser(UserEntity user) {
@@ -164,4 +166,24 @@ public class UserService  {
                 .randomLightningTopics(randomLightningTopics)
                 .build();
     }
+
+    /*   public Boolean changePassword(PasswordChangeDto pwDto, UserEntity user) {
+           if (pwDto.getPassword().equals(pwDto.getOldPassword())) {
+               return false;
+           } else user.setPassword(pwDto.getPassword());
+           userRepository.save(user);
+       }
+     */
+    public Boolean changePassword(PasswordChangeDto pwDto, Long userId) {
+        return this.userRepository.findById(userId)
+                .filter(user -> passwordEncoder.matches(pwDto.getOldPassword(), user.getPassword()))
+                .map(user -> {
+                    user.setPassword(passwordEncoder.encode(pwDto.getPassword()));
+                    return userRepository.save(user);
+                }).isPresent();
+
+
+    } :
+            ()->false;
+}
 }
