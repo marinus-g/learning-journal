@@ -15,8 +15,8 @@
         <hr>
         <section class="profile-section">
             <div class="profile-picture-wrapper">
-                <div class="image-wrapper" data-toggle="tooltip" data-placement="top" title="Profilbild ändern">
-                    <img th:src="@{/user/{id}/avatar(id=${selfUser.getId()})}" width="95px" height="95px" alt="Profilbild"
+                <div class="image-wrapper">
+                    <img th:src="@{/user/{id}/avatar(id=${selfUser.getId()})}" width="95px" height="95px" alt="Avatar"
                          class="profile-picture">
                 </div>
                 <div>
@@ -198,7 +198,7 @@
         }
 </style>
 <script th:src="@{/js/navbar.js}"></script>
-<script th:src="@{/js/profile.js}"></script>
 <script th:replace="~{bootstrap/script.html}"></script>
+<script th:src="@{/js/profile.js}"></script>
 </body>
 </html>
