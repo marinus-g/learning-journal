@@ -89,9 +89,12 @@ public class UserService  {
     }
 
 
-    public void updateUser(UserDto userDto) {
+    public UserDto updateUser(UserDto userDto) {
+        return this.updateUser(userDto.getId(), userDto);
+    }
 
-        userRepository.findById(userDto.getId()).ifPresentOrElse(
+    public UserDto updateUser(long userId, UserDto userDto) {
+        return userRepository.findById(userId).map(
                 user -> {
                     if (userDto.getFirstName() != null) {
                         user.setFirstName(userDto.getFirstName());
@@ -99,18 +102,17 @@ public class UserService  {
                     if (userDto.getLastName() != null) {
                         user.setLastName(userDto.getLastName());
                     }
-                    if (userDto.getUsername() != null) {
+                    if (userDto.getUsername() != null && !userDto.getUsername().equals(user.getUsername())
+                            && userRepository.findByUsernameIgnoreCase(userDto.getUsername()).isEmpty()) {
                         user.setUsername(userDto.getUsername());
                     }
                     if (userDto.getEmail() != null) {
                         user.setEmail(userDto.getEmail());
                     }
-                    userRepository.save(user);
-                },
-                () -> {
-                    throw new RuntimeException("User nicht gefunden");
-                }
-        );
+                    return userRepository.save(user);
+                })
+                .map(this::toDto)
+                .orElseThrow(() -> new RuntimeException("User nicht gefunden"));
     }
 
     int i = 0;
