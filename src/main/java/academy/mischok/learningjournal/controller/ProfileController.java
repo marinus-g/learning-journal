@@ -21,7 +21,7 @@ public class ProfileController {
         this.userService = userService;
     }
 
-    @GetMapping("")
+    @GetMapping
     public String getProfilePage(@AuthenticationPrincipal UserEntity user, HttpServletRequest request, Model model) {
         model.addAttribute("selfUser", this.userService.toDto(user));
         model.addAttribute("httpServletRequest", request);
