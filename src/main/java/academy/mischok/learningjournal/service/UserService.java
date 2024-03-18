@@ -74,7 +74,8 @@ public class UserService  {
                         .build()
                 )
                 .map(userEntity -> {
-                    Optional.ofNullable(userDto.getUserRoles()).ifPresent(userEntity::setRoles);
+                    Optional.ofNullable(userDto.getUserRoles()).ifPresentOrElse(userEntity::setRoles,
+                            () -> userEntity.setRoles(new HashSet<>()));
                     return userEntity;
                 })
                 .map(this.userRepository::save)
@@ -122,6 +123,7 @@ public class UserService  {
                 .forEach(aLong -> al);
          */
 
+
         if (i != 0) { // TODO: FIND A BETTER SOLUTION FOR THAT
             if (!entityManager.contains(userEntity)) {
                 userEntity = this.userRepository.findById(userEntity.getId()).orElseThrow();
@@ -132,7 +134,8 @@ public class UserService  {
 
         final var schoolClass = Optional.ofNullable(userEntity.getSchoolClass())
                 .map(SchoolClass::getId).orElse(null);
-        final var userRoles = Optional.ofNullable(userEntity.getRoles()).orElse(new HashSet<>());
+        final var userRoles = Optional.ofNullable(userEntity.getRoles())
+                .orElseThrow(() -> new RuntimeException(new NullPointerException("User roles are null")));
         final var scheduleEntries = Optional.ofNullable(userEntity.getScheduleEntries())
                 .stream()
                 .flatMap(Collection::stream)
@@ -183,7 +186,5 @@ public class UserService  {
                 }).isPresent();
 
 
-    } :
-            ()->false;
-}
+    }
 }
