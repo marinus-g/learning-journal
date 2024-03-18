@@ -26,12 +26,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**")) // Disable CSRF for h2 console
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**", "/logout")) // Disable CSRF for h2 console
                 .formLogin(configurer -> configurer
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .failureUrl("/login?failure=true")
                         .successForwardUrl("/dashboard"))
+                .logout(configurer -> configurer.logoutUrl("/logout")
+                        .deleteCookies("JSESSIONID")
+                        .logoutSuccessUrl("/login")
+                        .clearAuthentication(true))
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers(
                                 AUTH_WHITELIST)
