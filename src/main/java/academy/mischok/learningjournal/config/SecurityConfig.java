@@ -19,7 +19,7 @@ public class SecurityConfig {
             "/login-error",
             "/error",
             "/h2-console/**",
-            "/img/**",
+            "/img/mischok-logo.png",
             "/js/login.js"
     };
 
