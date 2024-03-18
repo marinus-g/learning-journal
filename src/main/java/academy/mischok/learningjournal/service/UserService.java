@@ -18,7 +18,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
@@ -26,7 +28,7 @@ import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
 @Service
-public class UserService  {
+public class UserService {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -35,15 +37,17 @@ public class UserService  {
     private final SubjectRepository subjectRepository;
     private final TopicRepository topicRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ImageService imageService;
 
     @Autowired
     public UserService(UserRepository userRepository, SchoolClassRepository schoolClassRepository,
-                       SubjectRepository subjectRepository, TopicRepository topicRepository, PasswordEncoder passwordEncoder) {
+                       SubjectRepository subjectRepository, TopicRepository topicRepository, PasswordEncoder passwordEncoder, ImageService imageService) {
         this.userRepository = userRepository;
         this.schoolClassRepository = schoolClassRepository;
         this.subjectRepository = subjectRepository;
         this.topicRepository = topicRepository;
         this.passwordEncoder = passwordEncoder;
+        this.imageService = imageService;
     }
 
     public Optional<UserEntity> findUserById(Long id) {
@@ -115,7 +119,36 @@ public class UserService  {
                 .orElseThrow(() -> new RuntimeException("User nicht gefunden"));
     }
 
+    public Optional<UserDto> changeAvatar(final Long user, MultipartFile avatar) {
+        return this.findUserById(user)
+                .map(userEntity -> {
+                    try {
+                        final String pictureId = this.imageService.createPicture(avatar);
+                        userEntity.setPictureId(pictureId);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return this.userRepository.saveAndFlush(userEntity);
+                })
+                .map(this::toDto);
+    }
+
+    public Optional<byte[]> findUserAvatar(Long userId) {
+        return this.userRepository.findById(userId)
+                .filter(userEntity -> userEntity.getPictureId() != null)
+                .map(userEntity -> imageService.findPicture(userEntity.getPictureId()))
+                .flatMap(file -> file)
+                .map(file -> {
+                    try {
+                        return imageService.fileToBytes(file);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+    }
+
     int i = 0;
+
     @Transactional
     public UserDto toDto(UserEntity userEntity) { // null
         /*
@@ -131,7 +164,6 @@ public class UserService  {
                 userEntity = this.userRepository.findById(userEntity.getId()).orElseThrow();
             }
         } else i++;
-
 
 
         final var schoolClass = Optional.ofNullable(userEntity.getSchoolClass())
@@ -186,7 +218,5 @@ public class UserService  {
                     user.setPassword(passwordEncoder.encode(pwDto.getPassword()));
                     return userRepository.save(user);
                 }).isPresent();
-
-
     }
 }

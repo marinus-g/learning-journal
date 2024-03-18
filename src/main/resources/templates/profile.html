@@ -16,12 +16,12 @@
         <section class="profile-section">
             <div class="profile-picture-wrapper">
                 <div class="image-wrapper" data-toggle="tooltip" data-placement="top" title="Profilbild ändern">
-                    <img th:src="@{img/mischok-logo.png}" width="75px" height="75px" alt="Profilbild"
+                    <img th:src="@{/user/{id}/avatar(id=${selfUser.getId()})}" width="95px" height="95px" alt="Profilbild"
                          class="profile-picture">
                 </div>
                 <div>
                     <input type="file" name="file" id="file" class="file-upload-input" accept="image/**"
-                           onchange="uploadProfilePicture(this.files[0])">
+                           th:onchange="'uploadProfilePicture(this.files[0], ' + ${selfUser.getId()} + ')'">
                     <label for="file" class="file-upload-label btn btn-dark" id="file-name">Profil Bild ändern</label>
                     <div id="uploadButton"></div>
                 </div>
@@ -156,8 +156,8 @@
         }
 
         .image-wrapper {
-            width: 75px;
-            height: 75px;
+            width: 95px;
+            height: 95px;
             border-radius: 50%;
             overflow: hidden;
             -webkit-user-drag: none;
@@ -167,6 +167,7 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            margin: 10px;
         }
 
         .file-upload-wrapper {
