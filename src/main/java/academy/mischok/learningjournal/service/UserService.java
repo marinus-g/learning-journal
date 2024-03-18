@@ -184,7 +184,5 @@ public class UserService  {
                     user.setPassword(passwordEncoder.encode(pwDto.getPassword()));
                     return userRepository.save(user);
                 }).isPresent();
-
-
     }
 }
