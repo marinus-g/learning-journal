@@ -18,6 +18,6 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
 
     List<UserEntity> findAllBySchoolClass(SchoolClass schoolClass);
     List<UserEntity> findAllByRolesContaining(Role role);
-    List<UserEntity> findAllByTopic(Topic topic);
-    List<UserEntity> findAllBySubject(Subject subject);
+    List<UserEntity> findAllByTeachingTopicsContaining(Topic topic);
+    List<UserEntity> findAllByTeachingSubjectsContaining(Subject subject);
 }
