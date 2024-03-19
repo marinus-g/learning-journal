@@ -25,7 +25,7 @@ public class UserDto {
     private String email;
 
     private Long schoolClass;
-    private Set<Role> userRoles;
+    private Set<Role> roles;
     private List<Long> scheduleEntries;
     private List<Long> teachingSubjects;
     private List<Long> teachingTopics;
