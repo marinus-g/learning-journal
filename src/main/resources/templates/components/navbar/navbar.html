@@ -50,7 +50,7 @@
                 <a th:text="${selfUser.getUsername()}" class="nav-link dropdown-toggle" href="#"
                    id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                 <div class="dropdown-menu profile-dropdown" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Profile</a>
+                    <a th:href="${httpServletRequest.getRequestURI() != '/profile' ? '/profile' : '#'}" class="dropdown-item">Profile</a>
                     <a onclick="logout()" class="dropdown-item" href="#">Logout</a>
                 </div>
             </li>
