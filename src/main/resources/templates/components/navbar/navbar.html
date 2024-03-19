@@ -30,10 +30,10 @@
                 <a class="nav-link" href="#">Benutzerverwaltung</a>
             </li>
             <!-- Section for Students -->
-            <li sec:authorize="hasAuthority('STUDENT')"
+            <li sec:authorize="hasAnyAuthority('STUDENT', 'ADMIN')"
                 class="nav-item"
                 th:classappend="${httpServletRequest.getRequestURI() == '/journal'} ? 'active-element' : 'inavtive-element'">
-                <a class="nav-link" href="#">Journal</a>
+                <a class="nav-link" th:href="${httpServletRequest.getRequestURI() != '/journal' ? '/journal' : '#'}">Journal</a>
             </li>
             <!-- Section for Teachers -->
             <li sec:authorize="hasAuthority('TEACHER')"
