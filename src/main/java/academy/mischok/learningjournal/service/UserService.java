@@ -1,5 +1,6 @@
 package academy.mischok.learningjournal.service;
 
+import academy.mischok.learningjournal.dto.PasswordChangeAction;
 import academy.mischok.learningjournal.dto.PasswordChangeDto;
 import academy.mischok.learningjournal.dto.UserDto;
 import academy.mischok.learningjournal.model.*;
@@ -80,9 +81,9 @@ public class UserService {
     }
 
 
-    public boolean deleteUser(UserEntity user) {
-        userRepository.deleteById(user.getId());
-        return !userRepository.existsById(user.getId());
+    public boolean deleteUser(Long user) {
+        userRepository.deleteById(user);
+        return !userRepository.existsById(user);
     }
 
 
@@ -246,21 +247,28 @@ public class UserService {
                 .build();
     }
 
-    public Boolean changePassword(PasswordChangeDto pwDto, Long userId) {
+    public PasswordChangeAction changePassword(PasswordChangeDto pwDto, Long userId) {
+        if (pwDto.getOldPassword() == null || pwDto.getPassword() == null || pwDto.getOldPassword().isBlank() || pwDto.getPassword().isBlank()) {
+            return PasswordChangeAction.NO_PASSWORD_ENTERED;
+        }
+        if (pwDto.getPassword().length() < 6) {
+            return PasswordChangeAction.TO_SHORT;
+        }
         return this.userRepository.findById(userId)
                 .filter(user -> passwordEncoder.matches(pwDto.getOldPassword(), user.getPassword()))
                 .map(user -> {
                     user.setPassword(passwordEncoder.encode(pwDto.getPassword()));
-                    return userRepository.save(user);
-                }).isPresent();
+                     userRepository.save(user);
+                     return PasswordChangeAction.CHANGED;
+                }).orElse(PasswordChangeAction.OLD_PASSWORD_NOT_EQUAL);
     }
 
     public List<UserEntity> findAllTeachersByTopic(Topic topic) {
-        return userRepository.findAllByTopic(topic);
+        return userRepository.findAllByTeachingTopicsContaining(topic);
     }
 
     public List<UserEntity> findAllTeachersBySubject(Subject subject) {
-        return userRepository.findAllBySubject(subject);
+        return userRepository.findAllByTeachingSubjectsContaining(subject);
     }
 
     public Boolean addToSchoolClass(Long userId, Long schoolClassId) {
