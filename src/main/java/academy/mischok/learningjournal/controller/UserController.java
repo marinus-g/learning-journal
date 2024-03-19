@@ -1,17 +1,23 @@
 package academy.mischok.learningjournal.controller;
 
 import academy.mischok.learningjournal.config.LearningJournalConfiguration;
+import academy.mischok.learningjournal.dto.PasswordChangeDto;
 import academy.mischok.learningjournal.dto.UserDto;
+import academy.mischok.learningjournal.model.Role;
+import academy.mischok.learningjournal.model.UserEntity;
 import academy.mischok.learningjournal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.html.Option;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -56,5 +62,30 @@ public class UserController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @PostMapping(value = "/password")
+    public String changePassword(@AuthenticationPrincipal UserEntity user, PasswordChangeDto passwordChangeDto) {
+        return Optional.of(this.userService.changePassword(passwordChangeDto, user.getId()))
+                .map(bool -> "redirect:/profile" + "?passwordAction=" + bool.name())
+                .orElseThrow(()
+                        -> new RuntimeException("An error occurred while changing password of user " + user.getId()));
+    }
+
+    // redirect:/profile
+    @DeleteMapping(value = "/{id}/delete") // /user/1/delete?redirect=profile
+    public String deleteUser(@AuthenticationPrincipal UserEntity selfUser, @PathVariable(value = "id") Long id,
+                             @RequestParam(name = "redirect", required = false, defaultValue = "profile") String redirectUrl) {
+        return Optional.of(id)
+                .filter(aLong -> selfUser.getId().equals(id) || selfUser.getRoles().contains(Role.ADMIN))
+                .map(aLong -> this.userService.deleteUser(id))
+                .map(aBoolean -> {
+                    if (selfUser.getId().equals(id)) {
+                        return "redirect:/logout";
+                    } else {
+                        return "redirect:/" + redirectUrl + "?userDeleteSuccess=" + aBoolean;
+                    }
+                })
+                .orElse("redirect:/" + redirectUrl + "?userDeleteSuccess=" + false);
     }
 }
