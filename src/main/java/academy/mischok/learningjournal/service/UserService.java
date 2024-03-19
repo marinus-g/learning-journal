@@ -256,11 +256,11 @@ public class UserService {
     }
 
     public List<UserEntity> findAllTeachersByTopic(Topic topic) {
-        return userRepository.findAllByTopic(topic);
+        return userRepository.findAllByTeachingTopicsContaining(topic);
     }
 
     public List<UserEntity> findAllTeachersBySubject(Subject subject) {
-        return userRepository.findAllBySubject(subject);
+        return userRepository.findAllByTeachingSubjectsContaining(subject);
     }
 
     public Boolean addToSchoolClass(Long userId, Long schoolClassId) {
