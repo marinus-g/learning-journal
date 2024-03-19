@@ -268,7 +268,7 @@ public class UserService {
                 .ifPresent(user -> schoolClassRepository
                         .findById(schoolClassId)
                         .ifPresent(user::setSchoolClass));
-        return true;
+        return schoolClassRepository.existsById(userId);
     }
 
     public Boolean leaveSchoolClass(UserEntity user) {
