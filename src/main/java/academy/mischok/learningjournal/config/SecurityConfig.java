@@ -26,7 +26,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**", "/logout")) // Disable CSRF for h2 console
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**", "/logout", "/user/{id}/avatar/**")) // Disable CSRF for h2 console
                 .formLogin(configurer -> configurer
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
