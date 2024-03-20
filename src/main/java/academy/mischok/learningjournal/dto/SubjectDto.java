@@ -17,5 +17,6 @@ public class SubjectDto {
     private String name;
     private String description;
     private List<Long> topicIds;
+    private String shortenedDescription;
 
 }

@@ -4,7 +4,9 @@ import academy.mischok.learningjournal.dto.JournalEntryDto;
 import academy.mischok.learningjournal.dto.SubjectDto;
 import academy.mischok.learningjournal.dto.TopicDto;
 import academy.mischok.learningjournal.model.UserEntity;
+import academy.mischok.learningjournal.repository.SubjectRepository;
 import academy.mischok.learningjournal.service.JournalService;
+import academy.mischok.learningjournal.service.SubjectService;
 import academy.mischok.learningjournal.service.TopicService;
 import academy.mischok.learningjournal.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,12 +28,15 @@ public class JournalEntryController {
     private final UserService userService;
     private final JournalService journalService;
     private final TopicService topicService;
+    private final SubjectService subjectService;
 
     @Autowired
-    public JournalEntryController(UserService userService, JournalService journalService, TopicService topicService) {
+    public JournalEntryController(UserService userService, JournalService journalService, TopicService topicService, SubjectService subjectService) {
         this.userService = userService;
+
         this.journalService = journalService;
         this.topicService = topicService;
+        this.subjectService = subjectService;
     }
 
     @GetMapping
@@ -60,20 +65,13 @@ public class JournalEntryController {
                 "\n" +
                 "Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo", List.of("tag1", "tag2")));
 
-        List<SubjectDto> testSubjects = new ArrayList<>();
-        testSubjects.add(SubjectDto.builder().id(1L).name("Mathematik").description("Mathematik").topicIds(List.of(1L)).build());
-        testSubjects.add(SubjectDto.builder().id(2L).name("Deutsch").description("Deutsch").topicIds(List.of(2L)).build());
-        testSubjects.add(SubjectDto.builder().id(3L).name("Englisch").description("Englisch").topicIds(List.of(3L)).build());
-        List<TopicDto> testTopics = new ArrayList<>();
-        testTopics.add(TopicDto.builder().id(1L).name("Algebra").subject(1L).build());
-        testTopics.add(TopicDto.builder().id(2L).name("Gedichtanalyse").subject(2L).build());
-        testTopics.add(TopicDto.builder().id(3L).name("Vokabeln").subject(3L).build());
-        model.addAttribute("subjects", testSubjects);
-        model.addAttribute("topics", testTopics);
+
+        model.addAttribute("subjects", this.subjectService.getAllSubjects());
         model.addAttribute("journalEntries", testEntries);
         model.addAttribute("selfUser", this.userService.toDto(userEntity));
         model.addAttribute("httpServletRequest", request);
         model.addAttribute("newJournalEntry", new JournalEntryDto());
+        System.out.println("TOPICJSON" + this.topicService.buildTopicJson());
         model.addAttribute("topics", this.topicService.buildTopicJson());
         return "journals";
     }

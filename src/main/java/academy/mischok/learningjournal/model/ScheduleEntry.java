@@ -16,4 +16,9 @@ public class ScheduleEntry {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "schedule_entry_id")
     private Long id;
+
+    @ManyToOne
+    private SchoolClass schoolClass;
+    @ManyToOne
+    private UserEntity teacher;
 }

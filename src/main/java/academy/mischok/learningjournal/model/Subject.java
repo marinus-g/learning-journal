@@ -23,6 +23,6 @@ public class Subject {
     @Column(name = "description",length = 1000)
     private String description;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "subject")
     private List<Topic> topics;
 }

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="topic-list">
+    <h4>Themen</h4>
+    <hr>
+    <div th:each="topic: ${topics}" class="topic-container">
+        <h5 th:text="${topic.name}"></h5>
+        <small style="color: #979797" th:text="${topic.getDescription()}"></small>
+        <hr>
+    </div>
+</div>
+<div class="topic-add-section">
+    <h3 class="d-2 text-white mb-2" align="center">Neues Thema hinzufügen</h3>
+    <p class="text-success mb-2 remove-me" align="center" th:if="${error != null && !error}">Thema hinzugefügt</p>
+    <p class="text-danger mb-2 remove-me" align="center" th:if="${error != null && error}">Thema existiert bereits</p> <!-- subjects/{id}/topics -->
+    <form class="topic-add-form" th:action="@{subjects/{id}/topic(id=${subjectId})}" method="post" th:object="${newTopic}"
+          th:method="post">
+        <div class="topic-form-group">
+            <label th:for="'topicName-' + ${subjectId}"></label><input placeholder="Thema" type="text" class="form-control"
+                                                                    th:id="'topicName-' + ${subjectId}" th:field="*{name}"
+                                                                      th:onkeyup="'onChangeTopicInput(' + ${subjectId} + ')'">
+            <label th:for="'topicDescription-' + ${subjectId}"></label><input placeholder="Beschreibung" type="text" class="form-control"
+                                                         th:id="'topicDescription-' + ${subjectId}" th:field="*{description}"
+                                                         th:onkeyup="'onChangeTopicInput(' + ${subjectId} + ')'">
+        </div>
+        <button th:id="'createTopicButton-' + ${subjectId}" disabled class="btn btn-dark">Thema erstellen</button>
+    </form>
+</div>
+
+<style>
+    .background-color {
+        background-color: #343a40;
+    }
+
+    hr {
+        border: none;
+        height: 1px;
+        background-color: #979797;
+        margin: 3px 0;
+        width: 100%;
+    }
+
+    .container {
+        display: grid;
+        align-items: start;
+        justify-content: center;
+        background-color: #1d1f20;
+        height: 51rem;
+        width: 95%;
+        margin-bottom: 1%;
+        box-shadow: #0c0c0c 0 0 10px 0;
+
+        .topic-form-group {
+            display: flex;
+            flex-direction: row;
+            margin-right: 3px;
+            align-items: center;
+        }
+
+        .topic-add-section {
+            margin-top: 10px;
+            justify-self: center;
+            align-self: end;
+            align-items: center;
+            margin-left: auto;
+            width: 100%;
+        }
+
+        .topic-add-form {
+            display: flex;
+            color: white;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 5px;
+        }
+
+        .topic-form-group label {
+            text-align: center;
+            font-size: small;
+        }
+
+        .topic-form-group input {
+            background-color: #262a2c;
+            color: white;
+            border-color: #1d1f20;
+            align-self: center;
+        }
+
+        .topic-form-group input::placeholder {
+            color: #cacaca;
+            text-align: center;
+        }
+
+        .topic-form-group input:focus {
+            background-color: #343a40;
+            color: white;
+            border-color: #1d1f20;
+            box-shadow: none;
+        }
+
+        .topic-list h4 {
+            font-size: 1.2rem;
+        }
+    }
+</style>

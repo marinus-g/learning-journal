@@ -48,7 +48,7 @@ public class UserEntity implements UserDetails {
     @Column(name = "picture_id")
     private String pictureId;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "teacher")
     private List<ScheduleEntry> scheduleEntries;
 
     @ManyToMany()
@@ -57,7 +57,7 @@ public class UserEntity implements UserDetails {
     @ManyToMany()
     private Set<Topic> teachingTopics;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "user")
     private List<RandomLightningTopic> randomLightningTopics;
 
 

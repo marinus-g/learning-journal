@@ -11,12 +11,12 @@
 <h3 class="d-1 text-white mt-2" align="center">Fächer und Themen</h3>
 <div class="container mt-2">
     <div class="subject-list">
-        <div th:each="subject: ${subjects}" class="subject-container">
+        <div th:each="subject: ${subjects}" class="subject-container-collapsed" onclick="onExpandSubject(this)" th:id="'subject-' + ${subject.id}">
             <h4 th:text="${subject.name}"></h4>
-            <small th:text="${subject.description}"></small>
+            <small style="color: #979797" th:text="${subject.getShortenedDescription()}"></small>
+            <hr>
         </div>
     </div>
-    <hr>
     <div class="subject-add-section">
         <h3 class="d-2 text-white mb-2" align="center">Neues Fach hinzufügen</h3>
         <p class="text-success mb-2 remove-me" align="center" th:if="${error != null && !error}">Fach hinzugefügt</p>
@@ -31,9 +31,19 @@
         </form>
     </div>
 </div>
+<p th:text="${subjectsJson}" id="hiddenSubjects" style="color: transparent; max-height: 0; max-width: 0"></p>
 <style>
     .background-color {
         background-color: #343a40;
+    }
+
+
+    hr {
+        border: none;
+        height: 1px;
+        background-color: #979797;
+        margin: 3px 0;
+        width: 100%;
     }
 
     .container {
@@ -49,9 +59,11 @@
 
 
     .subject-add-section {
-        justify-self: end;
+        justify-self: center;
         align-self: end;
+        align-items: center;
         margin-left: auto;
+        width: 100%;
     }
     .subject-add-form {
         display: flex;
@@ -102,7 +114,49 @@
         height: 96%;
         color: white;
         overflow: auto;
+        width: 100%;
     }
+
+    .subject-container-collapsed {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-content: center;
+        cursor: pointer;
+    }
+
+    .subject-container-expanded {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        align-content: center;
+    }
+
+    .subject-container-collapsed:hover {
+        background-color: #434343;
+        color: #e5e5e5;
+    }
+
+    .arrow {
+        border: solid black;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 3px;
+        cursor: pointer;
+        transition: border 0.2s ease-in-out 0s;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+
+    }
+
+    .arrow:hover {
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+    }
+
 
 
 </style>
