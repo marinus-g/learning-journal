@@ -1,5 +1,6 @@
 package academy.mischok.learningjournal.service;
 
+import academy.mischok.learningjournal.controller.advisor.ClassController;
 import academy.mischok.learningjournal.dto.UserDto;
 import academy.mischok.learningjournal.model.RandomLightningTopic;
 import academy.mischok.learningjournal.model.ScheduleEntry;
@@ -32,6 +33,7 @@ public class UserService  {
     private final SubjectRepository subjectRepository;
     private final TopicRepository topicRepository;
     private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
     public UserService(UserRepository userRepository, SchoolClassRepository schoolClassRepository,

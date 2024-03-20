@@ -19,8 +19,7 @@ public class ApplicationStartListener implements ApplicationListener<Application
     private final LearningJournalConfiguration learningJournalConfiguration;
 
     @Autowired
-    public ApplicationStartListener(UserService userService,
-                                    LearningJournalConfiguration learningJournalConfiguration) {
+    public ApplicationStartListener(UserService userService, LearningJournalConfiguration learningJournalConfiguration) {
         this.userService = userService;
         this.learningJournalConfiguration = learningJournalConfiguration;
     }
