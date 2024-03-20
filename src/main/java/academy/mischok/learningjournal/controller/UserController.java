@@ -5,13 +5,16 @@ import academy.mischok.learningjournal.dto.PasswordChangeDto;
 import academy.mischok.learningjournal.dto.UserDto;
 import academy.mischok.learningjournal.model.Role;
 import academy.mischok.learningjournal.model.UserEntity;
+import academy.mischok.learningjournal.repository.UserRepository;
 import academy.mischok.learningjournal.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,7 +36,22 @@ public class UserController {
         this.configuration = configuration;
     }
 
-    @PostMapping("/{id}")
+    @GetMapping("/benutzerverwaltung")
+    public String getUserManagement(Model model, @AuthenticationPrincipal UserEntity user, HttpServletRequest request) {
+            model.addAttribute("selfUser", this.userService.toDto(user));
+            model.addAttribute("httpServletRequest", request);
+            model.addAttribute("users", this.userService.findAllUsers());
+        return "usermanagement";
+    }
+    @GetMapping("/edit/{id}")
+    public String openEditUser(@PathVariable Long id, Model model, @AuthenticationPrincipal UserEntity user, HttpServletRequest request) {
+        model.addAttribute("selfUser", this.userService.toDto(user));
+        model.addAttribute("httpServletRequest", request);
+        model.addAttribute("user", this.userService.findUserById(user.getId());
+        return "edit-user";
+    }
+
+    @PostMapping("/edit/{id}")
     public String updateUser(@PathVariable Long id,
                             UserDto userDto,
                            @RequestParam(defaultValue = "profile") String oldPath) {

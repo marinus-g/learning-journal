@@ -43,7 +43,9 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
         this.imageService = imageService;
     }
-
+    public List<UserDto> findAllUsers() {
+        return userRepository.findAll().stream().map(users -> toDto(users)).toList();
+    }
     public Optional<UserEntity> findUserById(Long id) {
         return userRepository.findById(id);
     }
