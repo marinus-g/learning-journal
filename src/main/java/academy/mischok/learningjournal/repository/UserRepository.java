@@ -1,8 +1,6 @@
 package academy.mischok.learningjournal.repository;
 
-import academy.mischok.learningjournal.model.Role;
-import academy.mischok.learningjournal.model.SchoolClass;
-import academy.mischok.learningjournal.model.UserEntity;
+import academy.mischok.learningjournal.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,5 +18,6 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
 
     List<UserEntity> findAllBySchoolClass(SchoolClass schoolClass);
     List<UserEntity> findAllByRolesContaining(Role role);
-
+    List<UserEntity> findAllByTeachingTopicsContaining(Topic topic);
+    List<UserEntity> findAllByTeachingSubjectsContaining(Subject subject);
 }

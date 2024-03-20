@@ -1,5 +1,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<nav class="navbar sticky-top navbar-dark navbar-collapse bg-dark navbar-expand-xl navbar-light bg-light" th:fragment="navbar">
+<nav class="navbar sticky-top navbar-dark navbar-collapse bg-dark navbar-expand-xl navbar-light bg-light"
+     th:fragment="navbar">
     <a class="navbar-brand ml-auto" href="#">Mischok Academy</a>
     <button class="navbar-toggler"
             type="button"
@@ -13,8 +14,9 @@
     <div class="collapse navbar-collapse align-right" id="navbarNavDropdown">
         <ul class="navbar-nav align-right">
             <li class="nav-item"
-            th:if="${selfUser.getSchoolClass()} != null">
-                <a class="nav-link" th:href="|@{/class/{id}(id=selfUser.getSchoolClass().getId())}|" th:text="${selfUser.getSchoolClass().getName()}"/>
+                th:if="${selfUser.getSchoolClass()} != null">
+                <a class="nav-link" th:href="|@{/class/{id}(id=selfUser.getSchoolClass().getId())}|"
+                   th:text="${selfUser.getSchoolClass().getName()}"/>
             </li>
             <!-- Section for Admin -->
             <li sec:authorize="hasAuthority('ADMIN')"
@@ -35,19 +37,21 @@
             </li>
             <!-- Section for Teachers -->
             <li sec:authorize="hasAuthority('TEACHER')"
-            class="nav-item dropdown"
-            th:classappend="${httpServletRequest.getRequestURI() == '/teacher'} ? 'active-element' : 'inactive-element'">
-                <a class="nav-link dropdown-toggle " id="navbarTeacherDropDown" data-toggle="teacher-dropdown" aria-haspopup="true" aria-expanded="false">Lehrer</a>
+                class="nav-item dropdown"
+                th:classappend="${httpServletRequest.getRequestURI() == '/teacher'} ? 'active-element' : 'inactive-element'">
+                <a class="nav-link dropdown-toggle " id="navbarTeacherDropDown" data-toggle="teacher-dropdown"
+                   aria-haspopup="true" aria-expanded="false">Lehrer</a>
                 <div class="dropdown-menu" aria-labelledby="navbarTeacherDropDown">
                     <a class="dropdown-item">Stundenplan</a>
                     <a class="dropdown-item">Fächer</a>
                 </div>
             </li>
             <li class="nav-item dropdown inactive-element">
-                <a th:text="${selfUser.getUsername()}" class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                <a th:text="${selfUser.getUsername()}" class="nav-link dropdown-toggle" href="#"
+                   id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                 <div class="dropdown-menu profile-dropdown" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Profile</a>
-                    <a class="dropdown-item" href="#">Logout</a>
+                    <a th:href="${httpServletRequest.getRequestURI() != '/profile' ? '/profile' : '#'}" class="dropdown-item">Profile</a>
+                    <a onclick="logout()" class="dropdown-item" href="#">Logout</a>
                 </div>
             </li>
         </ul>
@@ -56,18 +60,22 @@
         .active-element {
             text-shadow: whitesmoke 0 0 3px;
         }
+
         .inactive-element {
             transition: text-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
             color: lightgray;
         }
+
         .inactive-element:hover {
             color: white;
             text-shadow: white 0 0 1px;
         }
+
         .align-right {
             justify-content: end;
             margin-right: 0.2%;
         }
+
         .profile-dropdown {
             right: 0;
             left: auto;
