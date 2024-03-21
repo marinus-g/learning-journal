@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link th:replace="~{bootstrap/style.html}">
+</head>
+<body class="d-flex align-items-center justify-content-center" style="height: 100vh; background-color: #343a40">
+<div id="passwordResetContainer"></div>
+<div class="container-fluid">
+    <div class="row justify-content-center text-white">
+        <div class="col-md-6 d-flex justify-content-center align-items-center" style="height: 100vh;">
+            <form th:action="@{/login}" method="post" style="max-width: 500px">
+                <img draggable="false" th:src="@{img/mischok-logo.png}" alt="Logo"
+                     width="99" height="122" class="mx-auto d-block disable-select">
+                <h1 class="justify-content-center mb-3 display-5 disable-select">Learning Journal</h1>
+                <div class="form-group">
+                    <label for="username">Username oder Email</label>
+                    <input type="text" autofocus class="form-control bg-transparent input-field" id="username"
+                           placeholder="Username" name="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Passwort</label>
+                    <input class="form-control bg-transparent input-field" id="password" placeholder="Passwort"
+                           name="password" type="password">
+                </div>
+                <div class="text-center mt-2 text-danger">
+                    <p th:if="${loginError}">Falscher Username oder Passwort!
+                </div>
+                <div class="text-center mt-3">
+                    <input class="btn btn-dark" type="submit" value="Einloggen">
+                </div>
+                <div class="text-center mt-2">
+                    <p class="password-reset disable-select"><a>Passwort Vergessen?</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script th:replace="~{bootstrap/script.html}"></script>
+<script th:src="@{/js/login.js}"></script>
+</body>
+<style>
+    .input-field::placeholder {
+        color: #8e8e8e;
+        text-align: center;
+    }
+
+    .input-field:focus-within {
+        color: #fff;
+    }
+
+    .input-field {
+        color: #fff;
+        border-color: #8e8e8e;
+    }
+
+    .password-reset {
+        color: #8e8e8e;
+        cursor: pointer;
+    }
+
+    .password-reset:hover {
+        color: #fff;
+    }
+
+    .disable-select {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+         -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+</style>
+</html>

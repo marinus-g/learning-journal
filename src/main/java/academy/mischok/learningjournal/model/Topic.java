@@ -2,6 +2,7 @@ package academy.mischok.learningjournal.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,6 +25,6 @@ public class Topic {
     @Column(name = "description",length = 1000)
     private String description;
 
-    @ManyToOne()
+    @ManyToOne
     private Subject subject;
 }

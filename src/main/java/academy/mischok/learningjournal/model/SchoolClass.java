@@ -28,10 +28,10 @@ public class SchoolClass {
     @Column(name = "short_description", length = 100)
     private String shortDescription;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "schoolClass")
     private List<UserEntity> students;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "schoolClass")
     private List<ScheduleEntry> schedule;
 
 }

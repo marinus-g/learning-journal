@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Learning Journals</title>
+    <link th:replace="~{bootstrap/style.html}">
+</head>
+<body class="background-color">
+<div id="journalViewContainer"></div>
+<nav th:replace="~{components/navbar/navbar.html :: navbar (selfUser=${selfUser}, httpServletRequest=${httpServletRequest})}"></nav>
+<div class="journals-container">
+    <form class="journal-form" th:action="@{/journals}" method="post" th:object="${newJournalEntry}" th:method="post">
+        <div class="entry-form-group">
+            <label for="titleInput">Titel</label>
+            <input placeholder="Titel" type="text" class="entry-form-entry-input" id="titleInput" th:field="*{title}">
+        </div>
+        <div class="entry-form-group">
+            <label for="entryInput">Journal Entry</label>
+            <textarea
+                    onkeyup="onChangeInput()"
+                    placeholder="Schreibe etwas.." class="entry-form-entry-input" id="entryInput" rows="3"
+                    th:field="*{content}"></textarea>
+        </div>
+        <div class="entry-grid-form-group">
+            <div class="entry-grid-form-group-item">
+                <label for="subjectSelect">Fach</label>
+                <select class="entry-form-entry-input" id="subjectSelect" th:field="*{subject}" onchange="onChangeSubject(this.value); onChangeInput()">
+                    <option class="default-selection" selected th:value="''">Fach auswählen</option>
+                    <option th:each="availableSubject: ${subjects}" th:value="${availableSubject.getId()}"
+                            th:text="${availableSubject.getName()}"></option>
+                </select>
+            </div>
+            <div class="entry-grid-form-group-item entry-grid-form-group-item-second">
+                <label for="topicSelect">Thema</label>
+                <select disabled class="entry-form-entry-input" id="topicSelect" th:field="*{topic}" onchange="onChangeInput()">
+                    <option class="default-selection" selected th:value="''">Thema auswählen</option>
+                </select>
+            </div>
+            <button id="entrySubmit" disabled class="btn btn-dark grid-right-bottom">Erstellen</button>
+        </div>
+    </form>
+    <hr>
+    <div class="entries-container">
+        <div class="entry-container" th:each="journal: ${journalEntries}" title="Klicke, zum ganz ansehen" th:onclick="'openJournalEntry(' + ${journal.id} + ')'">
+            <div class="entry-body">
+                <h2 th:text="${journal.getTitle()}"></h2>
+                <p th:text="${journal.getShortEntry()}"></p>
+            </div>
+            <div class="entry-footer">
+                <small th:text="${journal.getSubjectName()} + ' ' + ${journal.getTopicName()}"/>
+                <small th:text="${journal.getTimestamp()}"/>
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+<div style="color: transparent" id="hiddenTopics" th:text="${topics}"></div>
+<style>
+
+    .journals-container {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-content: center;
+    }
+
+    .journal-form {
+        width: 90%;
+        display: grid;
+        grid-gap: 4px;
+    }
+
+    .entry-form-entry-input {
+        display: flex;
+        flex-direction: row;
+        width: 10%;
+    }
+
+    select {
+        cursor: pointer;
+    }
+
+    select:disabled {
+        cursor: default;
+    }
+
+    .entry-form-group {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        margin: 0;
+        justify-content: space-between;
+    }
+
+    .entry-grid-form-group {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        width: 100%;
+    }
+
+    .entry-grid-form-group-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 20%;
+        margin: 1px;
+    }
+
+    .entry-grid-form-group-item-second {
+        margin-left: 1%;
+    }
+
+
+    .entry-form-entry-input {
+        width: 100%;
+        background-color: #262a2c;
+        color: white;
+        border: 1px solid transparent;
+        box-shadow: #0c0c0c 0 0 1px;
+        border-radius: 2px;
+        margin: 0 1px;
+        padding: 5px;
+        resize: none;
+    }
+
+    .grid-right-bottom {
+        justify-self: end;
+        align-self: end;
+        margin-left: auto;
+    }
+
+    label {
+        color: white;
+        font-family: Inter, serif;
+        font-size: small;
+        text-wrap: none;
+        margin-right: 5px;
+        text-align: left;
+        width: 5%;
+    }
+
+    .entry-grid-form-group-item label {
+        text-align: left;
+        width: 32%;
+    }
+
+
+
+    .background-color {
+        background-color: #343a40;
+    }
+
+    .entry-container {
+        cursor: pointer;
+    }
+
+    .entry-body {
+        padding: 10px;
+        max-width: 80%;
+    }
+
+    .entry-body h2 {
+        color: white;
+        font-family: Inter;
+        margin-bottom: 15px;
+    }
+
+    .entry-body p {
+        color: white;
+        font-family: Monospaced;
+    }
+
+</style>
+<script th:src="@{/js/navbar.js}"></script>
+<script th:src="@{/js/journals.js}"></script>
+<script th:replace="~{bootstrap/script.html}"></script>
+</body>
+</html>

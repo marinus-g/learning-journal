@@ -1,10 +1,7 @@
 package academy.mischok.learningjournal.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.List;
@@ -14,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class JournalEntry {
 
     @Id
@@ -36,8 +34,8 @@ public class JournalEntry {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "entry")
-    private String entry;
+    @Column(name = "content", columnDefinition = "TEXT")
+    private String content;
 
     @ManyToMany()
     private List<Tag> tag;
