@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fächer</title>
+    <link th:replace="~{bootstrap/style.html}">
+
+</head>
+<body class="background-color">
+<nav th:replace="~{components/navbar/navbar.html :: navbar (selfUser=${selfUser}, httpServletRequest=${httpServletRequest})}"></nav>
+<h3 class="d-1 text-white mt-2" align="center">Fächer und Themen</h3>
+<div class="container mt-2">
+    <div class="subject-list">
+        <div th:each="subject: ${subjects}" class="subject-container-collapsed" onclick="onExpandSubject(this)" th:id="'subject-' + ${subject.id}">
+            <h4 th:text="${subject.name}"></h4>
+            <small style="color: #979797" th:text="${subject.getShortenedDescription()}"></small>
+            <hr>
+        </div>
+    </div>
+    <div class="subject-add-section">
+        <h3 class="d-2 text-white mb-2" align="center">Neues Fach hinzufügen</h3>
+        <p class="text-success mb-2 remove-me" align="center" th:if="${error != null && !error}">Fach hinzugefügt</p>
+        <p class="text-danger mb-2 remove-me" align="center" th:if="${error != null && error}">Fach existiert bereits</p>
+        <form class="subject-add-form" th:action="@{/subjects}" method="post" th:object="${newSubject}"
+              th:method="post">
+            <div class="subject-form-group">
+                <label for="subjectName"></label><input placeholder="Fach" type="text" class="form-control" id="subjectName" th:field="*{name}" onkeyup="onChangeSubjectInput()">
+                <label for="subjectDescription"></label><input placeholder="Beschreibung" type="text" class="form-control" id="subjectDescription" th:field="*{description}" onkeyup="onChangeSubjectInput()">
+            </div>
+            <button id="createSubjectButton" disabled class="btn btn-dark">Fach erstellen</button>
+        </form>
+    </div>
+</div>
+<p th:text="${subjectsJson}" id="hiddenSubjects" style="color: transparent; max-height: 0; max-width: 0"></p>
+<style>
+    .background-color {
+        background-color: #343a40;
+    }
+
+
+    hr {
+        border: none;
+        height: 1px;
+        background-color: #979797;
+        margin: 3px 0;
+        width: 100%;
+    }
+
+    .container {
+        display: grid;
+        align-items: start;
+        justify-content: center;
+        background-color: #1d1f20;
+        height: 51rem;
+        width: 95%;
+        margin-bottom: 1%;
+        box-shadow: #0c0c0c 0 0 10px 0;
+    }
+
+
+    .subject-add-section {
+        justify-self: center;
+        align-self: end;
+        align-items: center;
+        margin-left: auto;
+        width: 100%;
+    }
+    .subject-add-form {
+        display: flex;
+        color: white;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 5px;
+    }
+
+    .subject-form-group {
+        display: flex;
+        flex-direction: row;
+        margin-right: 3px;
+        align-items: center;
+    }
+
+    .subject-form-group label {
+        text-align: center;
+        font-size: small;
+    }
+
+    .subject-form-group input {
+        background-color: #262a2c;
+        color: white;
+        border-color: #1d1f20;
+        align-self: center;
+    }
+
+    .subject-form-group input::placeholder {
+        color: #cacaca;
+        text-align: center;
+    }
+
+    .subject-form-group input:focus {
+        background-color: #343a40;
+        color: white;
+        border-color: #1d1f20;
+        box-shadow: none;
+    }
+
+    .subject-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        margin-top: 2%;
+        height: 96%;
+        color: white;
+        overflow: auto;
+        width: 100%;
+    }
+
+    .subject-container-collapsed {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-content: center;
+        cursor: pointer;
+    }
+
+    .subject-container-expanded {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        align-content: center;
+    }
+
+    .subject-container-collapsed:hover {
+        background-color: #434343;
+        color: #e5e5e5;
+    }
+
+    .arrow {
+        border: solid black;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 3px;
+        cursor: pointer;
+        transition: border 0.2s ease-in-out 0s;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+
+    }
+
+    .arrow:hover {
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+    }
+
+
+
+</style>
+<script th:src="@{/js/navbar.js}"></script>
+<script th:src="@{/js/subjects.js}"></script>
+<script th:replace="~{bootstrap/script.html}"></script>
+</body>
+</html>
