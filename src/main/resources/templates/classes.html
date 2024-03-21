@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<input class="form-control" id="disabledInput" type="text" placeholder="Disabled input here..." disabled>
+<h1 style="color: grey" class="headline">Klassenverwaltung<br></h1>
 <head>
     <meta charset="UTF-8">
     <title>Klassen</title>
@@ -21,9 +21,16 @@
        font-color: white;
    }
 
+    h1 {
+        position: static;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
    input {
         margin-top: 10px;
-        margin-left: 10px;
+        margin-left: 05px;
    }
 
    .background-color {
@@ -31,57 +38,68 @@
    }
 
     div {
-       margin-left: 20px;
+       margin-left: 220px;
+       margin-right: 220px;
+       align: center;
     }
 
-   .table, th, td {
-       margin-left: 100px;
-       border: 1px solid white;
+    .table {
+       background-color: 2a2d2f;
+       margin-top: 20px;
+       margin-right: 70px;
    }
+
+   tr:hover {
+   background-color: grey;
+   }
+
+
 
 </style>
 
 <p th:if="${createClass != null}" style="color:#ffff;">Klasse hinzugefügt</p>
 <br><br>
 <div>
-    <p style="color:white">Klassen 09/2023</p>
-<table style="color:white" >
-    <tr>
-        <th>ID</th>
-        <th>Klassen</th>
-        <th>Anzahl Schüler </th>
-    </tr>
-    <tr>
-        <td>F3</td>
-        <td>Systemintegration</td>
-        <td>13</td>
-    </tr>
-    <tr>
-        <td>A3</td>
-        <td>Anwendungsentwicklung</td>
-        <td>14</td>
-    </tr>
-</table>
-</div><br>
-<div>
-    <p style="color:white">Klassen 03/2024</p>
-    <table style="color:white">
+    <p style="color:white">aktuelle Klassen</p>
+
+    <table class="table">
+        <thead>
         <tr>
-            <th>ID</th>
-            <th>Klassen</th>
-            <th>Anzahl Schüler </th>
+            <th scope="col">ID</th>
+            <th scope="col">Klassen</th>
+            <th scope="col">Anzahl Schüler</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="class: ${classes}">
+            <th scope="row" th:text="${class.getName()}">F4</th>
+            <td th:href="@{/classrooms/{id} (id=class.id)}}">Systemintegration</td>
+            <td>13</td>
+        </tr>
+        <tr th:each="class: ${classes}">
+            <th scope="row" th:text="${class.name}">A4</th>
+            <td th:href="@{/classrooms/{id} (id=${class.id})}">Anwendungsentwicklung</td>
+            <td>14</td>
         </tr>
         <tr>
-            <td>F4</td>
+            <th>sdf</th>
+        </tr>
+
+        <tr>
+            <th scope="row">F3</th>
             <td>Systemintegration</td>
             <td>10</td>
         </tr>
         <tr>
-            <td>A4</td>
+            <th scope="row">A3</th>
             <td>Anwendungsentwicklung</td>
             <td>11</td>
         </tr>
+
+        </tbody>
     </table>
 </div>
+
+
 </body>
 </html>

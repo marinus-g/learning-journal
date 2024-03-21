@@ -39,4 +39,9 @@ public class ClassController {
 
     }
 
+    @GetMapping("/classrooms/{id}")
+    public String classroom(@PathVariable Long id, Model model){
+        return "Klasse";
+    }
+
     }
