@@ -77,6 +77,7 @@ public class UserService {
                 .map(userEntity -> {
                     Optional.ofNullable(userDto.getRoles()).ifPresentOrElse(userEntity::setRoles,
                             () -> userEntity.setRoles(new HashSet<>()));
+                    userEntity.setScheduleEntries(new ArrayList<>());
                     return userEntity;
                 })
                 .map(this.userRepository::save)

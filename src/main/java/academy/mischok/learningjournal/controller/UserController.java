@@ -47,7 +47,7 @@ public class UserController {
     public String openEditUser(@PathVariable Long id, Model model, @AuthenticationPrincipal UserEntity user, HttpServletRequest request) {
         model.addAttribute("selfUser", this.userService.toDto(user));
         model.addAttribute("httpServletRequest", request);
-        model.addAttribute("user", this.userService.findUserById(id).map(userService::toDto));
+        model.addAttribute("user", this.userService.findUserById(id).map(userService::toDto).orElseThrow());
         return "edit-user";
     }
 
