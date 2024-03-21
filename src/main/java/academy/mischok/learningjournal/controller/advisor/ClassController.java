@@ -28,13 +28,16 @@ public class ClassController {
         List<SchoolClassDto> classes = schoolClassService.findAllSchoolClasses();
         model.addAttribute("classes",classes);
         model.addAttribute("newClass",new SchoolClassDto());
-        return "classes.html";
+        return "classes";
     }
 
     @PostMapping("/classrooms")
     public String createClass(@ModelAttribute("newClass") SchoolClassDto schoolClassDto,Model model) {
         model.addAttribute("createClass", schoolClassService.createSchoolClass(schoolClassDto));
-        return "classes.html";
+        List<SchoolClassDto> classes = schoolClassService.findAllSchoolClasses();
+        model.addAttribute("classes",classes);
+        model.addAttribute("newClass",new SchoolClassDto());
+        return "classes";
 
 
     }
@@ -42,6 +45,13 @@ public class ClassController {
     @GetMapping("/classrooms/{id}")
     public String classroom(@PathVariable Long id, Model model){
         return "Klasse";
+    }
+
+    @GetMapping("/classrooms/edit/{id}")
+    public String getEditClassroom(@PathVariable("id") Long classId, Model model) {
+        SchoolClassDto editDto = schoolClassService.catchSchoolClassById(classId);
+        model.addAttribute("editClass",editDto);
+
     }
 
     }
