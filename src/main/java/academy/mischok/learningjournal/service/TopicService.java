@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TopicService {
@@ -56,7 +57,10 @@ public class TopicService {
     this.topicRepository.save(topic);
     // Re-fetch the subject from the database to get the latest state
     subject = this.subjectRepository.findById(subjectId).orElseThrow();
-    System.out.println("TOPICS:" + subject.getTopics().size());
     return topic.getId() != null;
 }
+
+    public Optional<Topic> findTopicById(Long topic) {
+        return this.topicRepository.findById(topic);
+    }
 }

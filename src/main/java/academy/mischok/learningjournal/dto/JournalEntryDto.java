@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 public class JournalEntryDto {
 
-    public JournalEntryDto(Long id, Instant timestamp, Long subject, Long topic, String subjectName, String topicName, String title, String entry, List<String> tag) {
+    public JournalEntryDto(Long id, Instant timestamp, Long subject, Long topic, String subjectName, String topicName, String title, String content, List<String> tag) {
         this.id = id;
         this.timestamp = timestamp;
         this.subject = subject;
@@ -18,13 +18,14 @@ public class JournalEntryDto {
         this.title = title;
         this.topicName = topicName;
         this.subjectName = subjectName;
-        this.entry = entry;
+        this.content = content;
         this.tag = tag;
-        this.shortEntry = entry.substring(0, Math.min(entry.length(), 280));
+        this.shortEntry = content.substring(0, Math.min(content.length(), 280));
     }
 
     private Long id;
     private Instant timestamp;
+    private Long user;
 
     private Long subject;
     private String subjectName; // THYMELEAF XD MOMENT
@@ -34,7 +35,7 @@ public class JournalEntryDto {
     private String title;
 
     private String shortEntry;
-    private String entry;
+    private String content;
 
     private List<String> tag;
 

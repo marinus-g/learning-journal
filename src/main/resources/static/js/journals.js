@@ -19,6 +19,19 @@ function buildTopicOption(topic) {
     return "<option value=\"" + topic.id + "\">" + topic.name + "</option>"
 }
 
+function openJournalEntry(id) {
+    fetch('/journals/' + id, {
+        method: 'GET',
+        credentials: 'include'
+
+    })
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('journalViewContainer').innerHTML = html;
+            $('.modal').modal('show');
+        });
+}
+
 function onChangeSubject(subject) {
     let str = "";
     let foundTopic = false;

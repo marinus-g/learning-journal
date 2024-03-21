@@ -1,0 +1,36 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="journal">
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mr-1 subject-title" th:text="${subject.name}"></h5>
+                    <h5 class="modal-title mr-1">></h5>
+                    <h5 class="modal-title mr-1 topic-title" th:text="${topic.name}"></h5>
+                    <h5 class="modal-title mr-1">></h5>
+                    <h5 class="modal-title mr-1" th:text="${journalEntry.title}"></h5>
+                </div>
+                <div class="modal-body">
+                    <p th:text="${journalEntry.content}" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Löschen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .mr-1 {
+            margin-right: 0.5rem;
+        }
+
+        .subject-title {
+            color: red;
+        }
+
+        .topic-title {
+            color: blue;
+        }
+    </style>
+</div>

@@ -55,7 +55,7 @@ public class SubjectController {
         model.addAttribute("subjectId", id);
         model.addAttribute("newTopic", new TopicDto());
         model.addAttribute("topics", this.subjectService.findSubjectById(id)
-                        .orElseThrow(() -> new NullPointerException("Subjet with id " + id + " not found!"))
+                        .orElseThrow(() -> new NullPointerException("Subject with id " + id + " not found!"))
                         .getTopics()
                         .stream()
                 .map(this.topicService::toDto)

@@ -6,6 +6,7 @@
     <link th:replace="~{bootstrap/style.html}">
 </head>
 <body class="background-color">
+<div id="journalViewContainer"></div>
 <nav th:replace="~{components/navbar/navbar.html :: navbar (selfUser=${selfUser}, httpServletRequest=${httpServletRequest})}"></nav>
 <div class="journals-container">
     <form class="journal-form" th:action="@{/journals}" method="post" th:object="${newJournalEntry}" th:method="post">
@@ -18,20 +19,20 @@
             <textarea
                     onkeyup="onChangeInput()"
                     placeholder="Schreibe etwas.." class="entry-form-entry-input" id="entryInput" rows="3"
-                    th:field="*{entry}"></textarea>
+                    th:field="*{content}"></textarea>
         </div>
         <div class="entry-grid-form-group">
             <div class="entry-grid-form-group-item">
                 <label for="subjectSelect">Fach</label>
                 <select class="entry-form-entry-input" id="subjectSelect" th:field="*{subject}" onchange="onChangeSubject(this.value); onChangeInput()">
                     <option class="default-selection" selected th:value="''">Fach auswählen</option>
-                    <option th:each="subject: ${subjects}" th:value="${subject.getId()}"
-                            th:text="${subject.getName()}"></option>
+                    <option th:each="availableSubject: ${subjects}" th:value="${availableSubject.getId()}"
+                            th:text="${availableSubject.getName()}"></option>
                 </select>
             </div>
             <div class="entry-grid-form-group-item entry-grid-form-group-item-second">
                 <label for="topicSelect">Thema</label>
-                <select disabled class="entry-form-entry-input" id="topicSelect" onchange="onChangeInput()">
+                <select disabled class="entry-form-entry-input" id="topicSelect" th:field="*{topic}" onchange="onChangeInput()">
                     <option class="default-selection" selected th:value="''">Thema auswählen</option>
                 </select>
             </div>
@@ -40,7 +41,7 @@
     </form>
     <hr>
     <div class="entries-container">
-        <div class="entry-container" th:each="journal: ${journalEntries}" title="Klicke, zum ganz ansehen">
+        <div class="entry-container" th:each="journal: ${journalEntries}" title="Klicke, zum ganz ansehen" th:onclick="'openJournalEntry(' + ${journal.id} + ')'">
             <div class="entry-body">
                 <h2 th:text="${journal.getTitle()}"></h2>
                 <p th:text="${journal.getShortEntry()}"></p>
