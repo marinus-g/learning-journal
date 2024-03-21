@@ -2,7 +2,6 @@ function openPasswordReset() {
     fetch('/login/password-reset')
         .then(response => response.text())
         .then(html => {
-            console.log(document.getElementById('passwordResetContainer'))
             document.getElementById('passwordResetContainer').innerHTML = html;
             $('.modal').modal('show');
         });

@@ -29,11 +29,16 @@
                 th:classappend="${httpServletRequest.getRequestURI() == '/users'} ? 'active-element' : 'inactive-element'">
                 <a class="nav-link" href="user/benutzerverwaltung">Benutzerverwaltung</a>
             </li>
-            <!-- Section for Students -->
-            <li sec:authorize="hasAuthority('STUDENT')"
+            <li sec:authorize="hasAuthority('ADMIN')"
                 class="nav-item"
-                th:classappend="${httpServletRequest.getRequestURI() == '/journal'} ? 'active-element' : 'inavtive-element'">
-                <a class="nav-link" href="#">Journal</a>
+                th:classappend="${httpServletRequest.getRequestURI() == '/subjects'} ? 'active-element' : 'inactive-element'">
+                <a class="nav-link" href="/subjects">Fächer & Themen</a>
+            </li>
+            <!-- Section for Students -->
+            <li sec:authorize="hasAnyAuthority('STUDENT', 'ADMIN')"
+                class="nav-item"
+                th:classappend="${httpServletRequest.getRequestURI() == '/journals'} ? 'active-element' : 'inavtive-element'">
+                <a class="nav-link" th:href="${httpServletRequest.getRequestURI() != '/journals' ? '/journals' : '#'}">Journal</a>
             </li>
             <!-- Section for Teachers -->
             <li sec:authorize="hasAuthority('TEACHER')"
