@@ -290,4 +290,27 @@ public class UserService {
         user.setSchoolClass(null);
         return true;
     }
+    public Set<Role> getMissingRoles(UserEntity user) {
+        Set<Role> allRoles = Arrays.stream(Role.values()).collect(Collectors.toSet());
+        Set<Role> userRoles = new HashSet<>();
+        for (Role role : allRoles) {
+            if (!user.getRoles().contains(role)) {
+                userRoles.add(role);
+            }
+        }
+        return userRoles;
+    }
+
+    public void removeUserRole(Long id, Role role) {
+        userRepository.findById(id).ifPresent(user -> {
+            user.getRoles().remove(role);
+            userRepository.save(user);
+        });
+    }
+    public void addUserRole(Long id, Role roleToAdd) {
+        userRepository.findById(id).ifPresent(user -> {
+            user.getRoles().add(roleToAdd);
+            userRepository.save(user);
+        });
+    }
 }

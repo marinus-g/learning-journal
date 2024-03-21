@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.text.html.Option;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -48,7 +49,28 @@ public class UserController {
         model.addAttribute("selfUser", this.userService.toDto(user));
         model.addAttribute("httpServletRequest", request);
         model.addAttribute("user", this.userService.findUserById(id).map(userService::toDto).orElseThrow());
+        model.addAttribute("roles", Arrays.stream(Role.values()).map(Enum::name).toList());
         return "edit-user";
+    }
+    @GetMapping("benutzerverwaltung/rollen/{id}")
+    public String getRoleEdit(@PathVariable Long id, Model model, @AuthenticationPrincipal UserEntity selfUser,HttpServletRequest request) {
+        model.addAttribute("selfUser", this.userService.toDto(selfUser));
+        model.addAttribute("httpServletRequest", request);
+        UserEntity user = userService.findUserById(id).orElseThrow();
+        model.addAttribute("user", this.userService.findUserById(id).map(userService::toDto).orElseThrow());
+        model.addAttribute("userOwnedRoles",user.getRoles());
+        model.addAttribute("missingRoles", userService.getMissingRoles(user));
+        return "user-roles";
+    }
+    @PostMapping("benutzerverwaltung/rollen/{id}/remove/{roleToRemove}")
+    public String removeRole(@PathVariable Long id,@PathVariable Role roleToRemove, @AuthenticationPrincipal UserEntity selfUser,HttpServletRequest request) {
+        userService.removeUserRole(id, roleToRemove);
+        return "redirect:/user/benutzerverwaltung/rollen/" + id;
+    }
+    @PostMapping("benutzerverwaltung/rollen/{id}/add/{roleToAdd}")
+    public String addRole(@PathVariable Long id,@PathVariable Role roleToAdd, @AuthenticationPrincipal UserEntity selfUser,HttpServletRequest request) {
+        userService.addUserRole(id, roleToAdd);
+        return "redirect:/user/benutzerverwaltung/rollen/" + id;
     }
 
     @PostMapping("/edit/{id}")

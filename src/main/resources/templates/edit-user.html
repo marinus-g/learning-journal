@@ -11,7 +11,7 @@
     <h1>User bearbeiten</h1>
 </div>
 <section class="profile-section">
-    <form class="data-section-wrapper" th:action="@{/user/edit/{id}?oldPath=user/benutzerverwaltung(id=${user.getId()})}" method="post"
+    <form class="data-section-wrapper" th:action="@{/user/edit/{id}(id=${user.getId()})}" method="post"
           th:object="${user}">
         <div class="data-section">
             <div class="data">
@@ -33,12 +33,11 @@
                 <label class="data-item" for="email">Email</label>
                 <input class="data-item-input" th:value="${user.getEmail()}" id="email">
             </div>
-            <div>
+                </div>
 
-            </div>
-        <button class="mt-2 btn btn-dark">Speichern</button>
         </div>
     </form>
     </section>
+<a class="btn btn-primary" th:href="@{/user/benutzerverwaltung/rollen/{id}(id=${userId})}">Benutzerrollen bearbeiten</a>
 </body>
 </html>
