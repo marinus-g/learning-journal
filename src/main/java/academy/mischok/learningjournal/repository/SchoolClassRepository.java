@@ -15,4 +15,6 @@ public interface SchoolClassRepository extends JpaRepository<SchoolClass,Long> {
     List<SchoolClass> findAllByLongDescriptionLike(String description);
     List<SchoolClass> findAllByShortDescriptionLike(String description);
     List<SchoolClass> findAllByNameLike(String name);
+
+    List<SchoolClass> findById(int id);
 }
