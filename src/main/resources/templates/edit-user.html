@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit User</title>
+    <link th:replace="~{bootstrap/style.html}"></link>
+</head>
+<body class="background-color">
+<nav th:replace="~{components/navbar/navbar.html :: navbar (user=${user}, httpServletRequest=${httpServletRequest})}"></nav>
+<div class="heading-style">
+    <h1>User bearbeiten</h1>
+</div>
+<section class="profile-section">
+    <form class="data-section-wrapper" th:action="@{/user/edit/{id}(id=${user.getId()})}" method="post"
+          th:object="${user}">
+        <div class="data-section">
+            <div class="data">
+                <label class="data-item" for="username">Username</label>
+                <input class="data-item-input" th:value="${user.getUsername()}" id="username"
+                       th:field="*{username}">
+            </div>
+            <div class="data">
+                <label class="data-item" for="firstName">Vorname</label>
+                <input class="data-item-input" th:value="${user.getFirstName()}" id="firstName"
+                       th:field="*{firstName}">
+            </div>
+            <div class="data">
+                <label class="data-item" for="lastName">Nachname</label>
+                <input class="data-item-input" th:value="${user.getLastName()}" id="lastName"
+                       th:field="*{lastName}">
+            </div>
+            <div class="data">
+                <label class="data-item" for="email">Email</label>
+                <input class="data-item-input" th:value="${user.getEmail()}" id="email">
+            </div>
+                </div>
+
+        </div>
+    </form>
+    </section>
+<a class="btn btn-primary" th:href="@{/user/benutzerverwaltung/rollen/{id}(id=${user.id})}">Benutzerrollen bearbeiten</a>
+</body>
+</html>

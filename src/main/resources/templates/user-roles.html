@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nutzerrollen</title>
+    <link th:replace="~{bootstrap/style.html}">
+</head>
+<body class="background-color">
+<nav th:replace="~{components/navbar/navbar.html :: navbar (user=${user}, httpServletRequest=${httpServletRequest})}"></nav>
+<div class="heading-style">
+    <h1>Rollen bearbeiten</h1>
+</div>
+<p>User: <span th:text="${user.username}"></span>  Vorname:<span th:text="${user.firstName}"></span>  Nachname:<span th:text="${user.lastName}"></span> </p>
+<table class="user-list">
+    <thead>
+    <tr>
+        <th>Vorhandene Rollen</th>
+        <th>Entfernen</th>
+    </tr>
+    </thead>
+    <tbody id="roleTable">
+    <tr th:each="role : ${userOwnedRoles}">
+        <td th:text="${role}"></td>
+        <td >
+            <form th:action="@{/user/benutzerverwaltung/rollen/{id}/remove/{roleName}(id=${user.id},roleName=${role})}" method="post">
+
+                <button>-</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="user-list">
+    <thead>
+    <tr>
+        <th>Fehlende Rollen</th>
+        <th>Hinzufügen</th>
+    </tr>
+    </thead>
+    <tbody id="missingRoleTable">
+    <tr th:each="role : ${missingRoles}">
+        <td th:text="${role}"></td>
+        <td >
+            <form th:action="@{/user/benutzerverwaltung/rollen/{id}/add/{roleName}(id=${user.id},roleName=${role})}" method="post">
+            <button>+</button>
+                </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a class="btn btn-secondary" th:href="@{/user/edit/{id}(id=${user.id})}">Zurück zur Bearbeitung</a>
+</body>
+</html>

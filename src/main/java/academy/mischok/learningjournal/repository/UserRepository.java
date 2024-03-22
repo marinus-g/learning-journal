@@ -2,6 +2,7 @@ package academy.mischok.learningjournal.repository;
 
 import academy.mischok.learningjournal.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,4 +21,8 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
     List<UserEntity> findAllByRolesContaining(Role role);
     List<UserEntity> findAllByTeachingTopicsContaining(Topic topic);
     List<UserEntity> findAllByTeachingSubjectsContaining(Subject subject);
+
+    boolean existsByPictureId(@NonNull String pictureId);
+
+
 }

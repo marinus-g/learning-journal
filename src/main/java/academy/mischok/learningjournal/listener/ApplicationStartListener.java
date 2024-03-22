@@ -4,6 +4,7 @@ import academy.mischok.learningjournal.config.LearningJournalConfiguration;
 import academy.mischok.learningjournal.dto.UserDto;
 import academy.mischok.learningjournal.model.Role;
 import academy.mischok.learningjournal.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
@@ -24,6 +25,7 @@ public class ApplicationStartListener implements ApplicationListener<Application
         this.learningJournalConfiguration = learningJournalConfiguration;
     }
 
+    @Transactional
     @Override
     public void onApplicationEvent(@NonNull ApplicationStartedEvent event) {
 
@@ -38,6 +40,17 @@ public class ApplicationStartListener implements ApplicationListener<Application
             userService.createUser(createDto)
                     .ifPresentOrElse(userDto -> System.out.println("Admin user created: " + userDto.getUsername()),
                             () -> System.out.println("Admin user creation failed"));
+            UserDto.CreateDto createDto2 = UserDto.CreateDto.of(
+                    "Desiree",
+                    "desireehaglwimmer@gmail.com",
+                    "abcdef",
+                    "Desiree",
+                    "Blechle");
+            createDto2.setRoles(Set.of(Role.TEACHER));
+            userService.createUser(createDto2)
+                    .ifPresentOrElse(userDto -> System.out.println("user created: " + userDto.getUsername()),
+                            () -> System.out.println("user creation failed"));
         }
+
     }
 }

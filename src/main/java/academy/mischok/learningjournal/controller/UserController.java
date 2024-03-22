@@ -5,18 +5,22 @@ import academy.mischok.learningjournal.dto.PasswordChangeDto;
 import academy.mischok.learningjournal.dto.UserDto;
 import academy.mischok.learningjournal.model.Role;
 import academy.mischok.learningjournal.model.UserEntity;
+import academy.mischok.learningjournal.repository.UserRepository;
 import academy.mischok.learningjournal.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.text.html.Option;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -33,7 +37,43 @@ public class UserController {
         this.configuration = configuration;
     }
 
-    @PostMapping("/{id}")
+    @GetMapping("/benutzerverwaltung")
+    public String getUserManagement(Model model, @AuthenticationPrincipal UserEntity user, HttpServletRequest request) {
+            model.addAttribute("selfUser", this.userService.toDto(user));
+            model.addAttribute("httpServletRequest", request);
+            model.addAttribute("users", this.userService.findAllUsers());
+        return "usermanagement";
+    }
+    @GetMapping("/edit/{id}")
+    public String openEditUser(@PathVariable Long id, Model model, @AuthenticationPrincipal UserEntity user, HttpServletRequest request) {
+        model.addAttribute("selfUser", this.userService.toDto(user));
+        model.addAttribute("httpServletRequest", request);
+        model.addAttribute("user", this.userService.findUserById(id).map(userService::toDto).orElseThrow());
+        model.addAttribute("roles", Arrays.stream(Role.values()).map(Enum::name).toList());
+        return "edit-user";
+    }
+    @GetMapping("benutzerverwaltung/rollen/{id}")
+    public String getRoleEdit(@PathVariable Long id, Model model, @AuthenticationPrincipal UserEntity selfUser,HttpServletRequest request) {
+        model.addAttribute("selfUser", this.userService.toDto(selfUser));
+        model.addAttribute("httpServletRequest", request);
+        UserEntity user = userService.findUserById(id).orElseThrow();
+        model.addAttribute("user", this.userService.findUserById(id).map(userService::toDto).orElseThrow());
+        model.addAttribute("userOwnedRoles",user.getRoles());
+        model.addAttribute("missingRoles", userService.getMissingRoles(user));
+        return "user-roles";
+    }
+    @PostMapping("benutzerverwaltung/rollen/{id}/remove/{roleToRemove}")
+    public String removeRole(@PathVariable Long id,@PathVariable Role roleToRemove, @AuthenticationPrincipal UserEntity selfUser,HttpServletRequest request) {
+        userService.removeUserRole(id, roleToRemove);
+        return "redirect:/user/benutzerverwaltung/rollen/" + id;
+    }
+    @PostMapping("benutzerverwaltung/rollen/{id}/add/{roleToAdd}")
+    public String addRole(@PathVariable Long id,@PathVariable Role roleToAdd, @AuthenticationPrincipal UserEntity selfUser,HttpServletRequest request) {
+        userService.addUserRole(id, roleToAdd);
+        return "redirect:/user/benutzerverwaltung/rollen/" + id;
+    }
+
+    @PostMapping("/edit/{id}")
     public String updateUser(@PathVariable Long id,
                             UserDto userDto,
                            @RequestParam(defaultValue = "profile") String oldPath) {
