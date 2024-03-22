@@ -51,7 +51,7 @@ public class ClassController {
     public String getEditClassroom(@PathVariable("id") Long classId, Model model) {
         SchoolClassDto editDto = schoolClassService.catchSchoolClassById(classId);
         model.addAttribute("editClass",editDto);
-
+        return "editClass";
     }
 
     }
