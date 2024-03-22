@@ -35,14 +35,26 @@ public class SchoolClassService {
     }
 
     public boolean createSchoolClass(SchoolClassDto schoolClassDto) {
-        if (schoolClassRepository.findByName(schoolClassDto.getName()).isPresent())
+        if (schoolClassRepository.findByName(schoolClassDto.getName()).isPresent()) {
             return false;
-        //neue enttiy erstellen     -
-        //entity mit Wertrén der DTO befüllen
-        //REpo aurufen und Entity speichern
+        }
         SchoolClass newClass = new SchoolClass();
         newClass.setName(schoolClassDto.getName());
+        newClass.setLongDescription(schoolClassDto.getLongDescription());
+        newClass.setShortDescription(schoolClassDto.getShortDescription());
+        schoolClassRepository.saveAndFlush(newClass);
             return true;
+    }
+
+    public SchoolClassDto catchSchoolClassById(Long classId) {
+        SchoolClass classEntity=schoolClassRepository.findById(classId).orElseThrow();
+        SchoolClassDto dto = new SchoolClassDto();
+        dto.setId(classEntity.getId());
+        dto.setName(classEntity.getName());
+        dto.setShortDescription(classEntity.getShortDescription());
+        dto.setLongDescription(classEntity.getLongDescription());
+
+            return dto;
     }
 }
 
