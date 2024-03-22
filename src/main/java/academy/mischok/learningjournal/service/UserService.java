@@ -1,6 +1,5 @@
 package academy.mischok.learningjournal.service;
 
-import academy.mischok.learningjournal.controller.advisor.ClassController;
 import academy.mischok.learningjournal.dto.PasswordChangeAction;
 import academy.mischok.learningjournal.dto.PasswordChangeDto;
 import academy.mischok.learningjournal.dto.UserDto;

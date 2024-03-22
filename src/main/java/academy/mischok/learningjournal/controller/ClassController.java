@@ -1,4 +1,4 @@
-package academy.mischok.learningjournal.controller.advisor;
+package academy.mischok.learningjournal.controller;
 
 import academy.mischok.learningjournal.dto.SchoolClassDto;
 import academy.mischok.learningjournal.dto.UserDto;
