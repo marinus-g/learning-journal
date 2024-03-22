@@ -1,6 +1,8 @@
 package academy.mischok.learningjournal.service;
 
+import academy.mischok.learningjournal.repository.UserRepository;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,15 +15,19 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @EnableScheduling
 public class ImageService {
 
+    private final UserRepository userRepository;
+
     private static final File PICTURE_DIRECTORY = new File("pictures");
     private static final String CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    public ImageService() {
+    public ImageService(UserRepository userRepository) {
+        this.userRepository = userRepository;
         if (!PICTURE_DIRECTORY.exists() || !PICTURE_DIRECTORY.isDirectory()) {
             if (!PICTURE_DIRECTORY.mkdirs()) {
                 throw new RuntimeException("Could not create picture directory");
@@ -67,6 +73,14 @@ public class ImageService {
         return Objects.requireNonNull(PICTURE_DIRECTORY
                 .listFiles((dir, name) -> name.split("\\.")[0].equals(name))
         ).length >= 1;
+    }
+
+    @Scheduled(timeUnit = TimeUnit.MINUTES, fixedRate = 5, initialDelay = 1)
+    public void deleteOldPictures() {
+        Arrays.stream(Objects.requireNonNull(PICTURE_DIRECTORY.listFiles((dir, name) -> {
+            final String referenceName = name.split("\\.")[0];
+            return !userRepository.existsByPictureId(referenceName);
+        }))).forEach(File::delete);
     }
 
     private String generateRandomId() {
