@@ -4,50 +4,92 @@
     <meta charset="UTF-8">
     <title>Nutzerrollen</title>
     <link th:replace="~{bootstrap/style.html}">
-</head>
-<body class="background-color">
-<nav th:replace="~{components/navbar/navbar.html :: navbar (user=${user}, httpServletRequest=${httpServletRequest})}"></nav>
-<div class="heading-style">
-    <h1>Rollen bearbeiten</h1>
-</div>
-<p>User: <span th:text="${user.username}"></span>  Vorname:<span th:text="${user.firstName}"></span>  Nachname:<span th:text="${user.lastName}"></span> </p>
-<table class="user-list">
-    <thead>
-    <tr>
-        <th>Vorhandene Rollen</th>
-        <th>Entfernen</th>
-    </tr>
-    </thead>
-    <tbody id="roleTable">
-    <tr th:each="role : ${userOwnedRoles}">
-        <td th:text="${role}"></td>
-        <td >
-            <form th:action="@{/user/benutzerverwaltung/rollen/{id}/remove/{roleName}(id=${user.id},roleName=${role})}" method="post">
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
 
-                <button>-</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<table class="user-list">
-    <thead>
-    <tr>
-        <th>Fehlende Rollen</th>
-        <th>Hinzufügen</th>
-    </tr>
-    </thead>
-    <tbody id="missingRoleTable">
-    <tr th:each="role : ${missingRoles}">
-        <td th:text="${role}"></td>
-        <td >
-            <form th:action="@{/user/benutzerverwaltung/rollen/{id}/add/{roleName}(id=${user.id},roleName=${role})}" method="post">
-            <button>+</button>
+        .heading-style {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .role-header, .remove-header, .add-header {
+            font-weight: bold;
+        }
+
+        .remove-button, .add-button {
+            width: 100px;
+        }
+
+        .remove-btn, .add-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            background-color: #f00;
+            color: #fff;
+        }
+
+        .back-btn {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<nav th:replace="~{components/navbar/navbar.html :: navbar (user=${user}, httpServletRequest=${httpServletRequest})}"></nav>
+<div class="container">
+    <div class="heading-style">
+        <h1>Rollen bearbeiten</h1>
+    </div>
+    <p>User: <span class="user-info" th:text="${user.username}"></span>  Vorname:<span class="user-info" th:text="${user.firstName}"></span>  Nachname:<span class="user-info" th:text="${user.lastName}"></span> </p>
+    <table class="user-list">
+        <thead>
+        <tr>
+            <th class="role-header">Vorhandene Rollen</th>
+            <th class="remove-header">Entfernen</th>
+        </tr>
+        </thead>
+        <tbody id="roleTable">
+        <tr th:each="role : ${userOwnedRoles}">
+            <td class="role-info" th:text="${role}"></td>
+            <td class="remove-button">
+                <form th:action="@{/user/benutzerverwaltung/rollen/{id}/remove/{roleName}(id=${user.id},roleName=${role})}" method="post">
+                    <button class="remove-btn">-</button>
                 </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<a class="btn btn-secondary" th:href="@{/user/edit/{id}(id=${user.id})}">Zurück zur Bearbeitung</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="user-list">
+        <thead>
+        <tr>
+            <th class="role-header">Fehlende Rollen</th>
+            <th class="add-header">Hinzufügen</th>
+        </tr>
+        </thead>
+        <tbody id="missingRoleTable">
+        <tr th:each="role : ${missingRoles}">
+            <td class="role-info" th:text="${role}"></td>
+            <td class="add-button">
+                <form th:action="@{/user/benutzerverwaltung/rollen/{id}/add/{roleName}(id=${user.id},roleName=${role})}" method="post">
+                    <button class="add-btn">+</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a class="btn btn-secondary back-btn" th:href="@{/user/edit/{id}(id=${user.id})}">Zurück zur Bearbeitung</a>
+</div>
 </body>
 </html>
+
